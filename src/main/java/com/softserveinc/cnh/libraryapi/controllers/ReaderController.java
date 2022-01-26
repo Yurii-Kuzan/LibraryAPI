@@ -1,6 +1,6 @@
 package com.softserveinc.cnh.libraryapi.controllers;
 
-import com.softserveinc.cnh.libraryapi.model.Book;
+import com.softserveinc.cnh.libraryapi.facade.BookReaderFacade;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.services.ReaderService;
 import org.springframework.http.HttpStatus;
@@ -15,9 +15,11 @@ public class ReaderController {
     public static final String READER_URL = "readers";
 
     private final ReaderService readerService;
+  //  private final BookReaderFacade bookReaderFacade;
 
     public ReaderController(ReaderService readerService) {
         this.readerService = readerService;
+        //this.bookReaderFacade = bookReaderFacade;
     }
 
     @GetMapping

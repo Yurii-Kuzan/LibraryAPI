@@ -1,13 +1,15 @@
-package com.softserveinc.cnh.libraryapi.services;
+package com.softserveinc.cnh.libraryapi.services.impl;
 
+import com.softserveinc.cnh.libraryapi.exceptions.BookNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.repositories.BookRepository;
+import com.softserveinc.cnh.libraryapi.services.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
@@ -17,12 +19,13 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book findBookById(Long id) {
-        return bookRepository.getById(id);
+        return bookRepository.findById(id).
+                orElseThrow(()-> new BookNotFoundException("Book with id " + id +" is not exist"));
     }
 
     @Override
     public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+        return (List<Book>) bookRepository.findAll();
     }
 
     @Override

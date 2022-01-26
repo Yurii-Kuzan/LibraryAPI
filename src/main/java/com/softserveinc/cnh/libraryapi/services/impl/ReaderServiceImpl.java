@@ -1,13 +1,14 @@
-package com.softserveinc.cnh.libraryapi.services;
+package com.softserveinc.cnh.libraryapi.services.impl;
 
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.repositories.ReaderRepository;
+import com.softserveinc.cnh.libraryapi.services.ReaderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ReaderServiceImpl implements ReaderService{
+public class ReaderServiceImpl implements ReaderService {
 
     private final ReaderRepository readerRepository;
 

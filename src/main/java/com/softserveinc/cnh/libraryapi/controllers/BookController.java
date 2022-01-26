@@ -1,5 +1,6 @@
 package com.softserveinc.cnh.libraryapi.controllers;
 
+import com.softserveinc.cnh.libraryapi.facade.BookReaderFacade;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.services.BookService;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,11 @@ public class BookController {
     public static final String BOOK_URL = "books";
 
     private final BookService bookService;
+   // private final BookReaderFacade bookReaderFacade;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
+        //this.bookReaderFacade = bookReaderFacade;
     }
 
     @GetMapping
@@ -35,7 +38,7 @@ public class BookController {
         return bookService.saveBook(book);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id){
         bookService.deleteBookById(id);
     }

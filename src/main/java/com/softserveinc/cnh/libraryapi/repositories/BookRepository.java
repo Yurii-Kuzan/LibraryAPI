@@ -3,14 +3,18 @@ package com.softserveinc.cnh.libraryapi.repositories;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.lang.annotation.Native;
 import java.util.List;
 
+/**
+ * Change extended interface to prod example `cause of opportunity to use Optional
+ */
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     @Query("select " +
             "b " +
             "from Book b " +
