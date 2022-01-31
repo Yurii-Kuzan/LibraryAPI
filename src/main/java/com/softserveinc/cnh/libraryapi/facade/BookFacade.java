@@ -13,9 +13,7 @@ import java.util.List;
 @Component
 public class BookFacade {
 
-    @Autowired
     private final BookService bookService;
-    @Autowired
     private final BookReaderService bookReaderService;
 
     public List<Book> findAllBooks(){

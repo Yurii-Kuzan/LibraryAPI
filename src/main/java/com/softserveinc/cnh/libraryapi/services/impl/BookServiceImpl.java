@@ -1,6 +1,6 @@
 package com.softserveinc.cnh.libraryapi.services.impl;
 
-import com.softserveinc.cnh.libraryapi.exceptions.BookNotFoundException;
+import com.softserveinc.cnh.libraryapi.exceptions.ResourceNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.repositories.BookRepository;
 import com.softserveinc.cnh.libraryapi.services.BookService;
@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findBookById(Long id) {
         return bookRepository.findById(id).
-                orElseThrow(()-> new BookNotFoundException("Book with id " + id +" is not exist"));
+                orElseThrow(()-> new ResourceNotFoundException("Book with id " + id +" is not exist"));
     }
 
     @Override

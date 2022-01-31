@@ -1,5 +1,6 @@
 package com.softserveinc.cnh.libraryapi.services.impl;
 
+import com.softserveinc.cnh.libraryapi.exceptions.ResourceNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.repositories.ReaderRepository;
 import com.softserveinc.cnh.libraryapi.services.ReaderService;
@@ -18,7 +19,8 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public Reader findReaderById(Long id) {
-        return readerRepository.getById(id);
+        return readerRepository.findById(id).
+                orElseThrow(()-> new ResourceNotFoundException("Reader with id " + id +" is not exist"));
     }
 
     @Override
