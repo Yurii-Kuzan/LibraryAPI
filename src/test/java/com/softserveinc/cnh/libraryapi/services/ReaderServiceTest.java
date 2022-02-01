@@ -30,11 +30,11 @@ class ReaderServiceTest {
 
     @Test
     void findReaderById_ReaderReturned() {
-        Long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
         when(readerRepository.findById(any())).thenReturn(java.util.Optional.of(reader));
-        Reader returnedReader = readerService.findReaderById(idValue);
+        var returnedReader = readerService.findReaderById(idValue);
 
         assertEquals(returnedReader.getReaderId(), idValue);
 
@@ -43,18 +43,17 @@ class ReaderServiceTest {
 
     @Test
     void findReaderById_ReaderNotFoundCase() {
-        Long idValue = 1L;
+        var idValue = 1L;
         ResourceNotFoundException thrown = Assertions.assertThrows(ResourceNotFoundException.class, () -> readerService.findReaderById(idValue), "Reader with id " + idValue + " is not exist");
-        assertEquals("Reader with id " + idValue + " is not exist", thrown.getMessage());
     }
 
     @Test
     void findAllReaders_ReadersReturned() {
-        long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
-        long idValueSecond = 2L;
-        Reader readerSecond = Reader.builder().readerId(idValueSecond).age(20).firstName("Mikhailo").build();
+        var idValueSecond = 2L;
+        var readerSecond = Reader.builder().readerId(idValueSecond).age(20).firstName("Mikhailo").build();
 
         List<Reader> readers = new ArrayList<>();
         readers.add(reader);
@@ -85,8 +84,8 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByAge_ReadersReturned() {
-        long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
         List<Reader> readers = new ArrayList<>();
         readers.add(reader);
 
@@ -111,8 +110,8 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByAddress_ReadersReturned() {
-        long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
         List<Reader> readers = new ArrayList<>();
         readers.add(reader);
 
@@ -137,8 +136,8 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByName_ReadersReturned() {
-        long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
         List<Reader> readers = new ArrayList<>();
         readers.add(reader);
 
@@ -162,8 +161,8 @@ class ReaderServiceTest {
 
     @Test
     void saveReader_ReaderSaved() {
-        Long idValue = 1L;
-        Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var idValue = 1L;
+        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
 
         when(readerRepository.save(any())).thenReturn(reader);
@@ -175,7 +174,7 @@ class ReaderServiceTest {
 
     @Test
     void deleteReaderById_ReaderDeleted() {
-        Long idValue = 1L;
+        var idValue = 1L;
 
         readerService.deleteReaderById(idValue);
         verify(readerRepository).deleteById(idValue);

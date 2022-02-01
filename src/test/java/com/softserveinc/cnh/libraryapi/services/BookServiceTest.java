@@ -35,12 +35,12 @@ class BookServiceTest {
      */
     @Test
     void findBookById_BookReturned() {
-        Long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.of(b1));
-        Book returnedBook = bookService.findBookById(idValue);
+        var returnedBook = bookService.findBookById(idValue);
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -52,10 +52,9 @@ class BookServiceTest {
 
     @Test
     void findBookById_BookNotFoundCase() {
-        Long idValue = 1L;
+        var idValue = 1L;
         ResourceNotFoundException thrown = Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> bookService.findBookById(idValue), "Book with id " + idValue + " is not exist");
-        assertEquals("Book with id " + idValue + " is not exist", thrown.getMessage());
     }
 
     /**
@@ -63,13 +62,13 @@ class BookServiceTest {
      */
     @Test
     void findAllBooks_BooksReturned() {
-        long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
-        long idValue2 = 2L;
-        Book b2 = Book.builder().bookId(idValue2).author("Lesya").title("ContraSpemSpero").year(1978).
+        var idValue2 = 2L;
+        var b2 = Book.builder().bookId(idValue2).author("Lesya").title("ContraSpemSpero").year(1978).
                 inStockNumber(7).takenBooksNumber(0).build();
 
         List<Book> books = new ArrayList<>();
@@ -107,8 +106,8 @@ class BookServiceTest {
 
     @Test
     void findBookByYear_BooksReturned() {
-        long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -139,8 +138,8 @@ class BookServiceTest {
 
     @Test
     void findBookByAuthor_BooksReturned() {
-        long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -171,8 +170,8 @@ class BookServiceTest {
 
     @Test
     void findBookByTitle_BooksReturned() {
-        long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -203,8 +202,8 @@ class BookServiceTest {
 
     @Test
     void saveBook_BookSaved() {
-        long idValue = 1L;
-        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var idValue = 1L;
+        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.save(any())).thenReturn(b1);
@@ -216,7 +215,7 @@ class BookServiceTest {
 
     @Test
     void deleteBookById_BookDeleted() {
-        Long idValue = 1L;
+        var idValue = 1L;
 
         bookService.deleteBookById(idValue);
         verify(bookRepository).deleteById(idValue);

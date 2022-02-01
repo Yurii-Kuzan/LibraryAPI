@@ -17,28 +17,16 @@ public class BootStrapData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Loading Book Data");
 
-        Book b1 = new Book();
-        b1.setAuthor("Taras");
-        b1.setTitle("Kobzar");
-        b1.setInStockNumber(5);
-        b1.setTakenBooksNumber(0);
-        b1.setYear(1977);
+        var b1 = Book.builder().author("Taras").title("Kobzar")
+                .inStockNumber(5).takenBooksNumber(0).year(1977).build();
         bookRepository.save(b1);
 
-        Book b2 = new Book();
-        b2.setAuthor("Taras Shevchenko");
-        b2.setTitle("Zapovit");
-        b2.setInStockNumber(8);
-        b2.setTakenBooksNumber(0);
-        b2.setYear(1978);
+        var b2 = Book.builder().author("Taras Shevchenko").title("Zapovit")
+                .inStockNumber(8).takenBooksNumber(0).year(1978).build();
         bookRepository.save(b2);
 
-        Book b3 = new Book();
-        b3.setAuthor("Lesya Ukrainka");
-        b3.setTitle("Contra Spem Spero");
-        b3.setInStockNumber(3);
-        b3.setTakenBooksNumber(0);
-        b3.setYear(1978);
+        var b3 = Book.builder().author("Lesya Ukrainka").title("Contra Spem Spero")
+                .inStockNumber(3).takenBooksNumber(0).year(1978).build();
         bookRepository.save(b3);
 
         System.out.println("Books saved: " + bookRepository.count());

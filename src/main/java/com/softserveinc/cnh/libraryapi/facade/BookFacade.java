@@ -4,7 +4,6 @@ import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.services.BookReaderService;
 import com.softserveinc.cnh.libraryapi.services.BookService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,33 +13,34 @@ import java.util.List;
 public class BookFacade {
 
     private final BookService bookService;
+
     private final BookReaderService bookReaderService;
 
-    public List<Book> findAllBooks(){
+    public List<Book> findAllBooks() {
         return bookService.findAllBooks();
     }
 
-    public Book findBookById(Long id){
+    public Book findBookById(Long id) {
         return bookService.findBookById(id);
     }
 
-    public Book saveBook(Book book){
+    public Book saveBook(Book book) {
         return bookService.saveBook(book);
     }
 
-    public void deleteBookById(Long id){
+    public void deleteBookById(Long id) {
         bookService.deleteBookById(id);
     }
 
-    public List<Book> findBookByYear(Integer year){
+    public List<Book> findBookByYear(Integer year) {
         return bookService.findBookByYear(year);
     }
 
-    public List<Book> findBookByAuthor(String author){
+    public List<Book> findBookByAuthor(String author) {
         return bookService.findBookByAuthor(author);
     }
 
-    public List<Book> findBookByTitle(String title){
+    public List<Book> findBookByTitle(String title) {
         return bookService.findBookByTitle(title);
     }
 

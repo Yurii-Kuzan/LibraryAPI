@@ -17,7 +17,7 @@ class BookTest {
 
     @Test
     void getBookId() {
-        Long idValue = 1L;
+        var idValue = 1L;
         book.setBookId(idValue);
 
         assertEquals(idValue, book.getBookId());
@@ -26,7 +26,7 @@ class BookTest {
 
     @Test
     void getTitle() {
-        String title = "Kobzar";
+        var title = "Kobzar";
         book.setTitle(title);
 
         assertEquals(title, book.getTitle());
@@ -34,7 +34,7 @@ class BookTest {
 
     @Test
     void getAuthor() {
-        String author = "Taras Shevchenko";
+        var author = "Taras Shevchenko";
         book.setAuthor(author);
 
         assertEquals(author, book.getAuthor());
@@ -42,7 +42,7 @@ class BookTest {
 
     @Test
     void getYear() {
-        Integer year = 1977;
+        var year = 1977;
         book.setYear(year);
 
         assertEquals(year, book.getYear());
