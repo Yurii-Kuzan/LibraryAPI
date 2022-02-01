@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findBookById(Long id) {
         return bookRepository.findById(id).
-                orElseThrow(()-> new ResourceNotFoundException("Book with id " + id +" is not exist"));
+                orElseThrow(() -> new ResourceNotFoundException("Book with id " + id + " is not exist"));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book saveBook(Book book){
+    public Book saveBook(Book book) {
         return bookRepository.save(book);
     }
 

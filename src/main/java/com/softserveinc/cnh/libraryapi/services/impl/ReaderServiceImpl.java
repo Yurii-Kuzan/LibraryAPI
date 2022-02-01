@@ -20,7 +20,7 @@ public class ReaderServiceImpl implements ReaderService {
     @Override
     public Reader findReaderById(Long id) {
         return readerRepository.findById(id).
-                orElseThrow(()-> new ResourceNotFoundException("Reader with id " + id +" is not exist"));
+                orElseThrow(() -> new ResourceNotFoundException("Reader with id " + id + " is not exist"));
     }
 
     @Override

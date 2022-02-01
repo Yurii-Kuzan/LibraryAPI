@@ -5,11 +5,12 @@ import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.repositories.BookRepository;
 import com.softserveinc.cnh.libraryapi.services.impl.BookServiceImpl;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -29,36 +30,41 @@ class BookServiceTest {
     @InjectMocks
     private BookServiceImpl bookService;
 
-    @BeforeEach
-    void setUp() {
-    }
-
+    /**
+     * ArgumentCaptor added
+     */
     @Test
-    void findBookById() {
+    void findBookById_BookReturned() {
         Long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.of(b1));
         Book returnedBook = bookService.findBookById(idValue);
 
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+
         assertEquals(idValue, returnedBook.getBookId());
 
-        verify(bookRepository).findById(any());
+        verify(bookRepository).findById(argumentCaptor.capture());
+        assertEquals(idValue, argumentCaptor.getValue());
     }
 
     @Test
-    void findBookById_ExceptionThrown() {
+    void findBookById_BookNotFoundCase() {
         Long idValue = 1L;
         ResourceNotFoundException thrown = Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> bookService.findBookById(idValue), "Book with id " + idValue + " is not exist");
         assertEquals("Book with id " + idValue + " is not exist", thrown.getMessage());
     }
 
+    /**
+     * Spy added
+     */
     @Test
-    void findAllBooks() {
+    void findAllBooks_BooksReturned() {
         long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -73,6 +79,12 @@ class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
         List<Book> returnedBooks = bookService.findAllBooks();
 
+        List<Book> spyList = Mockito.spy(books);
+        assertEquals(spyList.size(), 2);
+
+        Mockito.doReturn(0).when(spyList).size();
+        assertEquals(spyList.size(), 0);
+
         assertNotNull(returnedBooks);
         assertEquals(returnedBooks.size(), 2);
         assertEquals(returnedBooks.get(0), b1);
@@ -81,9 +93,22 @@ class BookServiceTest {
     }
 
     @Test
-    void findBookByYear() {
+    void findAllBooks_ReturnedEmptyBooksList() {
+        List<Book> books = new ArrayList<>();
+
+        when(bookRepository.findAll()).thenReturn(books);
+        List<Book> returnedBooks = bookService.findAllBooks();
+
+        assertTrue(returnedBooks.isEmpty());
+
+        verify(bookRepository).findAll();
+    }
+
+
+    @Test
+    void findBookByYear_BooksReturned() {
         long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -101,9 +126,21 @@ class BookServiceTest {
     }
 
     @Test
-    void findBookByAuthor() {
+    void findBookByYear_ReturnedEmptyBooksList() {
+        List<Book> books = new ArrayList<>();
+
+        when(bookRepository.findBookByYear(1977)).thenReturn(books);
+        List<Book> returnedBooks = bookService.findBookByYear(1977);
+
+        assertTrue(returnedBooks.isEmpty());
+
+        verify(bookRepository).findBookByYear(1977);
+    }
+
+    @Test
+    void findBookByAuthor_BooksReturned() {
         long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -121,9 +158,21 @@ class BookServiceTest {
     }
 
     @Test
-    void findBookByTitle() {
+    void findBookByAuthor_ReturnedEmptyBooksList() {
+        List<Book> books = new ArrayList<>();
+
+        when(bookRepository.findBookByAuthor("Taras")).thenReturn(books);
+        List<Book> returnedBooks = bookService.findBookByAuthor("Taras");
+
+        assertTrue(returnedBooks.isEmpty());
+
+        verify(bookRepository).findBookByAuthor("Taras");
+    }
+
+    @Test
+    void findBookByTitle_BooksReturned() {
         long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
@@ -141,9 +190,21 @@ class BookServiceTest {
     }
 
     @Test
-    void saveBook() {
+    void findBookByTitle_ReturnedEmptyBooksList() {
+        List<Book> books = new ArrayList<>();
+
+        when(bookRepository.findBookByTitle("Kobzar")).thenReturn(books);
+        List<Book> returnedBooks = bookService.findBookByTitle("Kobzar");
+
+        assertTrue(returnedBooks.isEmpty());
+
+        verify(bookRepository).findBookByTitle("Kobzar");
+    }
+
+    @Test
+    void saveBook_BookSaved() {
         long idValue = 1L;
-        Book b1 =  Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        Book b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.save(any())).thenReturn(b1);
@@ -154,7 +215,7 @@ class BookServiceTest {
     }
 
     @Test
-    void deleteBookById() {
+    void deleteBookById_BookDeleted() {
         Long idValue = 1L;
 
         bookService.deleteBookById(idValue);

@@ -5,7 +5,6 @@ import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.repositories.ReaderRepository;
 import com.softserveinc.cnh.libraryapi.services.impl.ReaderServiceImpl;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,12 +28,8 @@ class ReaderServiceTest {
     @InjectMocks
     private ReaderServiceImpl readerService;
 
-    @BeforeEach
-    void setUp() {
-    }
-
     @Test
-    void findReaderById() {
+    void findReaderById_ReaderReturned() {
         Long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
@@ -47,14 +42,14 @@ class ReaderServiceTest {
     }
 
     @Test
-    void findReaderById_InvalidValue() {
+    void findReaderById_ReaderNotFoundCase() {
         Long idValue = 1L;
         ResourceNotFoundException thrown = Assertions.assertThrows(ResourceNotFoundException.class, () -> readerService.findReaderById(idValue), "Reader with id " + idValue + " is not exist");
         assertEquals("Reader with id " + idValue + " is not exist", thrown.getMessage());
     }
 
     @Test
-    void findAllReaders_ValidValue() {
+    void findAllReaders_ReadersReturned() {
         long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
@@ -73,12 +68,23 @@ class ReaderServiceTest {
         assertEquals(returnedReaders.get(0), reader);
 
         verify(readerRepository).findAll();
+    }
 
+    @Test
+    void findAllReaders_ReturnedEmptyReadersList() {
+        List<Reader> readers = new ArrayList<>();
+
+        when(readerRepository.findAll()).thenReturn(readers);
+        List<Reader> returnedReaders = readerService.findAllReaders();
+
+        assertTrue(returnedReaders.isEmpty());
+
+        verify(readerRepository).findAll();
     }
 
 
     @Test
-    void findReaderByAge() {
+    void findReaderByAge_ReadersReturned() {
         long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
         List<Reader> readers = new ArrayList<>();
@@ -92,7 +98,19 @@ class ReaderServiceTest {
     }
 
     @Test
-    void findReaderByAddress() {
+    void findReaderByAge_ReturnedEmptyReadersList() {
+        List<Reader> readers = new ArrayList<>();
+
+        when(readerRepository.findReaderByAge(any())).thenReturn(readers);
+        List<Reader> returnedReaders = readerService.findReaderByAge(18);
+
+        assertTrue(returnedReaders.isEmpty());
+
+        verify(readerRepository).findReaderByAge(18);
+    }
+
+    @Test
+    void findReaderByAddress_ReadersReturned() {
         long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
         List<Reader> readers = new ArrayList<>();
@@ -106,7 +124,19 @@ class ReaderServiceTest {
     }
 
     @Test
-    void findReaderByName() {
+    void findReaderByAddress_ReturnedEmptyReaderList() {
+        List<Reader> readers = new ArrayList<>();
+
+        when(readerRepository.findReaderByAddress(any())).thenReturn(readers);
+        List<Reader> returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
+
+        assertTrue(returnedReaders.isEmpty());
+
+        verify(readerRepository).findReaderByAddress("Pushkinska 79");
+    }
+
+    @Test
+    void findReaderByName_ReadersReturned() {
         long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
         List<Reader> readers = new ArrayList<>();
@@ -120,7 +150,18 @@ class ReaderServiceTest {
     }
 
     @Test
-    void saveReader() {
+    void findReaderByName_ReturnedEmptyReadersList() {
+        List<Reader> readers = new ArrayList<>();
+
+        when(readerRepository.findReaderByName(any())).thenReturn(readers);
+        List<Reader> returnedReaders = readerService.findReaderByName("Yurii");
+
+        assertTrue(returnedReaders.isEmpty());
+        verify(readerRepository).findReaderByName("Yurii");
+    }
+
+    @Test
+    void saveReader_ReaderSaved() {
         Long idValue = 1L;
         Reader reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
 
@@ -133,7 +174,7 @@ class ReaderServiceTest {
     }
 
     @Test
-    void deleteReaderById() {
+    void deleteReaderById_ReaderDeleted() {
         Long idValue = 1L;
 
         readerService.deleteReaderById(idValue);
