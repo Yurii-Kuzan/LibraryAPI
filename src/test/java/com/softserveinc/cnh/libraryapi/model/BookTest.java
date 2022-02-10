@@ -18,9 +18,9 @@ class BookTest {
     @Test
     void getBookId() {
         var idValue = 1L;
-        book.setBookId(idValue);
+        book.setId(idValue);
 
-        assertEquals(idValue, book.getBookId());
+        assertEquals(idValue, book.getId());
     }
 
 

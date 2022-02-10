@@ -38,9 +38,9 @@ class BookControllerTest {
     @Test
     void getAllBooks() throws Exception {
         List<Book> books = new ArrayList<>();
-        books.add(Book.builder().bookId(1L).author("Taras").title("Kobzar").year(1977).
+        books.add(Book.builder().id(1L).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build());
-        books.add(Book.builder().bookId(2L).author("Lesya").title("ContraSpemSpero").year(1978).
+        books.add(Book.builder().id(2L).author("Lesya").title("ContraSpemSpero").year(1978).
                 inStockNumber(7).takenBooksNumber(0).build());
 
         when(bookFacade.findAllBooks()).thenReturn(books);

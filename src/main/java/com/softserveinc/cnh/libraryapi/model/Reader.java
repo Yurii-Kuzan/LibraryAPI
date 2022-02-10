@@ -16,7 +16,7 @@ public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private long     readerId;
+    private long id;
 
     @Column(name = "first_name")
     private String firstName;

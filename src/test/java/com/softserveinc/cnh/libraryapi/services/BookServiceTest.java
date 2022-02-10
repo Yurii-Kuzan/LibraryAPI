@@ -14,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +35,7 @@ class BookServiceTest {
     @Test
     void findBookById_BookReturned() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.findById(any())).thenReturn(java.util.Optional.of(b1));
@@ -44,7 +43,7 @@ class BookServiceTest {
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
-        assertEquals(idValue, returnedBook.getBookId());
+        assertEquals(idValue, returnedBook.getId());
 
         verify(bookRepository).findById(argumentCaptor.capture());
         assertEquals(idValue, argumentCaptor.getValue());
@@ -63,22 +62,28 @@ class BookServiceTest {
     @Test
     void findAllBooks_BooksReturned() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
-                inStockNumber(5).takenBooksNumber(0).build();
+        var b1 = Book.builder()
+                .id(idValue)
+                .author("Taras")
+                .title("Kobzar")
+                .year(1977)
+                .inStockNumber(5)
+                .takenBooksNumber(0)
+                .build();
 
 
         var idValue2 = 2L;
-        var b2 = Book.builder().bookId(idValue2).author("Lesya").title("ContraSpemSpero").year(1978).
+        var b2 = Book.builder().id(idValue2).author("Lesya").title("ContraSpemSpero").year(1978).
                 inStockNumber(7).takenBooksNumber(0).build();
 
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
         books.add(b1);
         books.add(b2);
 
         when(bookRepository.findAll()).thenReturn(books);
-        List<Book> returnedBooks = bookService.findAllBooks();
+        var returnedBooks = bookService.findAllBooks();
 
-        List<Book> spyList = Mockito.spy(books);
+        var spyList = Mockito.spy(books);
         assertEquals(spyList.size(), 2);
 
         Mockito.doReturn(0).when(spyList).size();
@@ -93,10 +98,10 @@ class BookServiceTest {
 
     @Test
     void findAllBooks_ReturnedEmptyBooksList() {
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
 
         when(bookRepository.findAll()).thenReturn(books);
-        List<Book> returnedBooks = bookService.findAllBooks();
+        var returnedBooks = bookService.findAllBooks();
 
         assertTrue(returnedBooks.isEmpty());
 
@@ -107,15 +112,15 @@ class BookServiceTest {
     @Test
     void findBookByYear_BooksReturned() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
         books.add(b1);
 
         when(bookRepository.findBookByYear(1977)).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByYear(1977);
+        var returnedBooks = bookService.findBookByYear(1977);
 
         assertNotNull(returnedBooks);
         assertEquals(returnedBooks.size(), 1);
@@ -126,10 +131,10 @@ class BookServiceTest {
 
     @Test
     void findBookByYear_ReturnedEmptyBooksList() {
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
 
         when(bookRepository.findBookByYear(1977)).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByYear(1977);
+        var returnedBooks = bookService.findBookByYear(1977);
 
         assertTrue(returnedBooks.isEmpty());
 
@@ -139,15 +144,15 @@ class BookServiceTest {
     @Test
     void findBookByAuthor_BooksReturned() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
         books.add(b1);
 
         when(bookRepository.findBookByAuthor("Taras")).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByAuthor("Taras");
+        var returnedBooks = bookService.findBookByAuthor("Taras");
 
         assertNotNull(returnedBooks);
         assertEquals(returnedBooks.size(), 1);
@@ -158,10 +163,10 @@ class BookServiceTest {
 
     @Test
     void findBookByAuthor_ReturnedEmptyBooksList() {
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
 
         when(bookRepository.findBookByAuthor("Taras")).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByAuthor("Taras");
+        var returnedBooks = bookService.findBookByAuthor("Taras");
 
         assertTrue(returnedBooks.isEmpty());
 
@@ -171,15 +176,15 @@ class BookServiceTest {
     @Test
     void findBookByTitle_BooksReturned() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
 
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
         books.add(b1);
 
         when(bookRepository.findBookByTitle("Kobzar")).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByTitle("Kobzar");
+        var returnedBooks = bookService.findBookByTitle("Kobzar");
 
         assertNotNull(returnedBooks);
         assertEquals(returnedBooks.size(), 1);
@@ -190,10 +195,10 @@ class BookServiceTest {
 
     @Test
     void findBookByTitle_ReturnedEmptyBooksList() {
-        List<Book> books = new ArrayList<>();
+        var books = new ArrayList<Book>();
 
         when(bookRepository.findBookByTitle("Kobzar")).thenReturn(books);
-        List<Book> returnedBooks = bookService.findBookByTitle("Kobzar");
+        var returnedBooks = bookService.findBookByTitle("Kobzar");
 
         assertTrue(returnedBooks.isEmpty());
 
@@ -203,13 +208,14 @@ class BookServiceTest {
     @Test
     void saveBook_BookSaved() {
         var idValue = 1L;
-        var b1 = Book.builder().bookId(idValue).author("Taras").title("Kobzar").year(1977).
+        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build();
 
         when(bookRepository.save(any())).thenReturn(b1);
-        Book returnedBook = bookService.saveBook(b1);
+        var returnedBook = bookService.saveBook(b1);
 
-        assertEquals(returnedBook.getBookId(), idValue);
+        assertEquals(returnedBook.getId(), idValue);
+
         verify(bookRepository).save(b1);
     }
 
@@ -218,6 +224,7 @@ class BookServiceTest {
         var idValue = 1L;
 
         bookService.deleteBookById(idValue);
+
         verify(bookRepository).deleteById(idValue);
     }
 

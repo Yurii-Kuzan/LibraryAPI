@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,12 +30,12 @@ class ReaderServiceTest {
     @Test
     void findReaderById_ReaderReturned() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
 
         when(readerRepository.findById(any())).thenReturn(java.util.Optional.of(reader));
         var returnedReader = readerService.findReaderById(idValue);
 
-        assertEquals(returnedReader.getReaderId(), idValue);
+        assertEquals(returnedReader.getId(), idValue);
 
         verify(readerRepository).findById(any());
     }
@@ -50,17 +49,17 @@ class ReaderServiceTest {
     @Test
     void findAllReaders_ReadersReturned() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
 
         var idValueSecond = 2L;
-        var readerSecond = Reader.builder().readerId(idValueSecond).age(20).firstName("Mikhailo").build();
+        var readerSecond = Reader.builder().id(idValueSecond).age(20).firstName("Mikhailo").build();
 
-        List<Reader> readers = new ArrayList<>();
+        var readers = new ArrayList<Reader>();
         readers.add(reader);
         readers.add(readerSecond);
 
         when(readerRepository.findAll()).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findAllReaders();
+        var returnedReaders = readerService.findAllReaders();
 
         assertNotNull(returnedReaders);
         assertEquals(returnedReaders.size(), 2);
@@ -71,10 +70,10 @@ class ReaderServiceTest {
 
     @Test
     void findAllReaders_ReturnedEmptyReadersList() {
-        List<Reader> readers = new ArrayList<>();
+        var readers = new ArrayList<Reader>();
 
         when(readerRepository.findAll()).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findAllReaders();
+        var returnedReaders = readerService.findAllReaders();
 
         assertTrue(returnedReaders.isEmpty());
 
@@ -85,12 +84,12 @@ class ReaderServiceTest {
     @Test
     void findReaderByAge_ReadersReturned() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
-        List<Reader> readers = new ArrayList<>();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
+        var readers = new ArrayList<Reader>();
         readers.add(reader);
 
         when(readerRepository.findReaderByAge(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByAge(18);
+        var returnedReaders = readerService.findReaderByAge(18);
 
         assertEquals(returnedReaders.get(0), reader);
         verify(readerRepository).findReaderByAge(18);
@@ -98,10 +97,10 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByAge_ReturnedEmptyReadersList() {
-        List<Reader> readers = new ArrayList<>();
+        var readers = new ArrayList<Reader>();
 
         when(readerRepository.findReaderByAge(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByAge(18);
+        var returnedReaders = readerService.findReaderByAge(18);
 
         assertTrue(returnedReaders.isEmpty());
 
@@ -111,12 +110,12 @@ class ReaderServiceTest {
     @Test
     void findReaderByAddress_ReadersReturned() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
-        List<Reader> readers = new ArrayList<>();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
+        var readers = new ArrayList<Reader>();
         readers.add(reader);
 
         when(readerRepository.findReaderByAddress(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
+        var returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
 
         assertEquals(returnedReaders.get(0), reader);
         verify(readerRepository).findReaderByAddress("Pushkinska 79");
@@ -124,10 +123,10 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByAddress_ReturnedEmptyReaderList() {
-        List<Reader> readers = new ArrayList<>();
+        var readers = new ArrayList<Reader>();
 
         when(readerRepository.findReaderByAddress(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
+        var returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
 
         assertTrue(returnedReaders.isEmpty());
 
@@ -137,12 +136,12 @@ class ReaderServiceTest {
     @Test
     void findReaderByName_ReadersReturned() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
-        List<Reader> readers = new ArrayList<>();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
+        var readers = new ArrayList<Reader>();
         readers.add(reader);
 
         when(readerRepository.findReaderByName(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByName("Yurii");
+        var returnedReaders = readerService.findReaderByName("Yurii");
 
         assertEquals(returnedReaders.get(0), reader);
         verify(readerRepository).findReaderByName("Yurii");
@@ -150,10 +149,10 @@ class ReaderServiceTest {
 
     @Test
     void findReaderByName_ReturnedEmptyReadersList() {
-        List<Reader> readers = new ArrayList<>();
+        var readers = new ArrayList<Reader>();
 
         when(readerRepository.findReaderByName(any())).thenReturn(readers);
-        List<Reader> returnedReaders = readerService.findReaderByName("Yurii");
+        var returnedReaders = readerService.findReaderByName("Yurii");
 
         assertTrue(returnedReaders.isEmpty());
         verify(readerRepository).findReaderByName("Yurii");
@@ -162,13 +161,13 @@ class ReaderServiceTest {
     @Test
     void saveReader_ReaderSaved() {
         var idValue = 1L;
-        var reader = Reader.builder().readerId(idValue).age(18).firstName("Yurii").build();
+        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
 
 
         when(readerRepository.save(any())).thenReturn(reader);
         Reader returnedReader = readerService.saveReader(reader);
 
-        assertEquals(returnedReader.getReaderId(), idValue);
+        assertEquals(returnedReader.getId(), idValue);
         verify(readerRepository).save(reader);
     }
 
