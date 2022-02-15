@@ -1,14 +1,14 @@
 package com.softserveinc.cnh.libraryapi.repositories;
 
-import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReaderRepository extends JpaRepository<Reader, Long> {
+public interface ReaderRepository extends JpaRepository<Reader, Long>, JpaSpecificationExecutor<Reader> {
 
     List<Reader> findReaderByAddress(String address);
 

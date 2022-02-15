@@ -1,12 +1,17 @@
 package com.softserveinc.cnh.libraryapi.services.impl;
 
+import com.softserveinc.cnh.libraryapi.dto.model.ReaderDTO;
 import com.softserveinc.cnh.libraryapi.exceptions.ResourceNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.repositories.ReaderRepository;
 import com.softserveinc.cnh.libraryapi.services.ReaderService;
+import com.softserveinc.cnh.libraryapi.specification.ReaderSpecification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReaderServiceImpl implements ReaderService {
@@ -39,17 +44,23 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public List<Reader> findReaderByAge(Integer age) {
-        return readerRepository.findReaderByAge(age);
-    }
-
-    @Override
-    public List<Reader> findReaderByAddress(String address) {
-        return readerRepository.findReaderByAddress(address);
-    }
-
-    @Override
-    public List<Reader> findReaderByName(String name) {
-        return readerRepository.findReaderByName(name);
+    public List<Reader> filterReaders(ReaderDTO readerDTO) {
+        if (readerDTO.getId() != null) {
+            List<Reader> singleReaderList = new ArrayList<>();
+            singleReaderList.add(findReaderById(readerDTO.getId()));
+            return singleReaderList;
+        }
+        Map<String, Object> attributes = new HashMap<>();
+        if (readerDTO.getAge() != null) {
+            attributes.put("age", readerDTO.getAge());
+        }
+        if (readerDTO.getAddress() != null) {
+            attributes.put("address", readerDTO.getAddress());
+        }
+        if (readerDTO.getFirstName() != null) {
+            attributes.put("first_name", readerDTO.getFirstName());
+        }
+        ReaderSpecification readerSpecification = ReaderSpecification.create(attributes);
+        return readerRepository.findAll(readerSpecification);
     }
 }

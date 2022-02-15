@@ -31,17 +31,4 @@ public class BookFacade {
     public void deleteBookById(Long id) {
         bookService.deleteBookById(id);
     }
-
-    public List<Book> findBookByYear(Integer year) {
-        return bookService.findBookByYear(year);
-    }
-
-    public List<Book> findBookByAuthor(String author) {
-        return bookService.findBookByAuthor(author);
-    }
-
-    public List<Book> findBookByTitle(String title) {
-        return bookService.findBookByTitle(title);
-    }
-
 }

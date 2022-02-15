@@ -1,13 +1,14 @@
 package com.softserveinc.cnh.libraryapi.controllers;
 
 import com.softserveinc.cnh.libraryapi.constants.Constants;
+import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.facade.BookFacade;
 import com.softserveinc.cnh.libraryapi.model.Book;
+import com.softserveinc.cnh.libraryapi.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,44 +17,28 @@ import java.util.Optional;
 public class BookController {
 
     private final BookFacade bookFacade;
+    private final BookService bookService;
 
-    public BookController(BookFacade bookFacade) {
+    public BookController(BookFacade bookFacade, BookService bookService) {
         this.bookFacade = bookFacade;
+        this.bookService = bookService;
     }
-
-//    @GetMapping
-//    public List<Book> getAllBooks() {
-//        return bookFacade.findAllBooks();
-//    }
 
     @GetMapping
     public ResponseEntity<List<Book>> filterBooks(@RequestParam Optional<Long> id, @RequestParam Optional<Integer> year,
-                                  @RequestParam Optional<String> author, @RequestParam Optional<String> title) {
-        if (!id.isPresent() && !year.isPresent() && !author.isPresent() && !title.isPresent()) {
-            return ResponseEntity.ok(bookFacade.findAllBooks());
+                                                  @RequestParam Optional<String> author, @RequestParam Optional<String> title) {
+        if (id.isEmpty() && year.isEmpty() && author.isEmpty() && title.isEmpty()) {
+            return ResponseEntity.ok(bookService.findAllBooks());
         } else {
-            if (id.isPresent()) {
-                var singleBookList = new ArrayList<Book>();
-                singleBookList.add(bookFacade.findBookById(id.get()));
-                return ResponseEntity.ok(singleBookList);
-            }
-            if (year.isPresent()) {
-                return ResponseEntity.ok(bookFacade.findBookByYear(year.get()));
-            }
-            if (author.isPresent()) {
-                return ResponseEntity.ok(bookFacade.findBookByAuthor(author.get()));
-            }
-            if (title.isPresent()) {
-                return ResponseEntity.ok(bookFacade.findBookByTitle(title.get()));
-            }
+            BookDTO bookDTO = new BookDTO();
+            bookDTO.setId(id.orElse(null));
+            bookDTO.setYear(year.orElse(null));
+            bookDTO.setAuthor(author.orElse(null));
+            bookDTO.setTitle(title.orElse(null));
+            //Validate(DTO)
+            return ResponseEntity.ok(bookService.filterBook(bookDTO));
         }
-        return new ResponseEntity<>( HttpStatus.NOT_FOUND );
     }
-
-//    @GetMapping("/book")
-//    public Book getBookById(@RequestParam Long id) {
-//        return bookFacade.findBookById(id);
-//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,19 +51,4 @@ public class BookController {
         bookFacade.deleteBookById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    @GetMapping("/year")
-//    public List<Book> getBookByYear(@RequestParam Integer year) {
-//        return bookFacade.findBookByYear(year);
-//    }
-//
-//    @GetMapping("/author")
-//    public List<Book> getBookByAuthor(@RequestParam String author) {
-//        return bookFacade.findBookByAuthor(author);
-//    }
-//
-//    @GetMapping("/title")
-//    public List<Book> getBookByTitle(@RequestParam String title) {
-//        return bookFacade.findBookByTitle(title);
-//    }
 }

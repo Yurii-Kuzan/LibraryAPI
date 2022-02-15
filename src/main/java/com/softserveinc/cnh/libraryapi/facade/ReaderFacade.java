@@ -31,16 +31,4 @@ public class ReaderFacade {
     public void deleteReaderById(Long id) {
         readerService.deleteReaderById(id);
     }
-
-    public List<Reader> findReaderByAge(Integer age) {
-        return readerService.findReaderByAge(age);
-    }
-
-    public List<Reader> findReaderByAddress(String address) {
-        return readerService.findReaderByAddress(address);
-    }
-
-    public List<Reader> findReaderByName(String name) {
-        return readerService.findReaderByName(name);
-    }
 }

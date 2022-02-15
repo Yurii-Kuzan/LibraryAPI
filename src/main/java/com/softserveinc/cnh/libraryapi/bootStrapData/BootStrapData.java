@@ -1,5 +1,8 @@
 package com.softserveinc.cnh.libraryapi.bootStrapData;
 
+import com.softserveinc.cnh.libraryapi.dto.mapper.BookMapper;
+import com.softserveinc.cnh.libraryapi.dto.mapper.BookMapperImpl;
+import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.repositories.BookRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -30,6 +33,10 @@ public class BootStrapData implements CommandLineRunner {
         bookRepository.save(b3);
 
         System.out.println("Books saved: " + bookRepository.count());
+        BookMapper bookMapper = new BookMapperImpl();
+
+        BookDTO bookDTO = bookMapper.bookToBookDTO(b1);
+        System.out.println(bookDTO.toString());
 
 
     }

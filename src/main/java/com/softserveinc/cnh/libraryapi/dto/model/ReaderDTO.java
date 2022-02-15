@@ -7,10 +7,10 @@ import java.util.Set;
 
 @Data
 public class ReaderDTO {
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String address;
-    private Integer year;
+    private Integer age;
     private Set<BookReader> bookAssociation;
 }

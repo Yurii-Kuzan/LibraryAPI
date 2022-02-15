@@ -1,5 +1,6 @@
 package com.softserveinc.cnh.libraryapi.services;
 
+import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.model.Book;
 
 import java.util.List;
@@ -13,9 +14,5 @@ public interface BookService {
 
     void deleteBookById(Long id);
 
-    List<Book> findBookByYear(Integer year);
-
-    List<Book> findBookByAuthor(String author);
-
-    List<Book> findBookByTitle(String title);
+    List<Book> filterBook(BookDTO bookDTO);
 }

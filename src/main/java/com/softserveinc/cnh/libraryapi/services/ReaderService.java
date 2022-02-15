@@ -1,6 +1,6 @@
 package com.softserveinc.cnh.libraryapi.services;
 
-import com.softserveinc.cnh.libraryapi.model.Book;
+import com.softserveinc.cnh.libraryapi.dto.model.ReaderDTO;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 
 import java.util.List;
@@ -14,9 +14,5 @@ public interface ReaderService {
 
     void deleteReaderById(Long id);
 
-    List<Reader> findReaderByAge(Integer age);
-
-    List<Reader> findReaderByAddress(String address);
-
-    List<Reader> findReaderByName(String name);
+    List<Reader> filterReaders(ReaderDTO readerDTO);
 }
