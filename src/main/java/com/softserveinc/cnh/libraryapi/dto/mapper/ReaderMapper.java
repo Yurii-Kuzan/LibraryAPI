@@ -8,5 +8,5 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ReaderMapper {
 
-    ReaderDTO readerToReaderDTO(Reader reader);
+    ReaderDTO toReaderDTO(Reader reader);
 }

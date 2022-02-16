@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface BookReaderMapper {
 
-    BookReaderDTO bookReaderToBookReaderDTO(BookReader bookReader);
+    BookReaderDTO toBookReaderDTO(BookReader bookReader);
 }

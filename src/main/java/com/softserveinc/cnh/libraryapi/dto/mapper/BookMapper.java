@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface BookMapper {
 
-    BookDTO bookToBookDTO(Book book);
+    BookDTO toBookDTO(Book book);
 }

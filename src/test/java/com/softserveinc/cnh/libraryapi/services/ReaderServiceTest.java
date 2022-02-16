@@ -1,15 +1,20 @@
 package com.softserveinc.cnh.libraryapi.services;
 
+import com.softserveinc.cnh.libraryapi.dto.model.ReaderDTO;
 import com.softserveinc.cnh.libraryapi.exceptions.ResourceNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.repositories.ReaderRepository;
 import com.softserveinc.cnh.libraryapi.services.impl.ReaderServiceImpl;
+import com.softserveinc.cnh.libraryapi.specification.ReaderSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 
@@ -81,88 +86,24 @@ class ReaderServiceTest {
     }
 
 
+    @MockitoSettings(strictness = Strictness.WARN)
     @Test
-    void findReaderByAge_ReadersReturned() {
-        var idValue = 1L;
-        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
-        var readers = new ArrayList<Reader>();
-        readers.add(reader);
+    void findBookByFilterMethod() {
+        ReaderDTO readerDTO = new ReaderDTO();
+        readerDTO.setAge(23);
+        readerDTO.setFirstName("Yurii");
+        readerDTO.setAddress("Pushkinska 79");
 
-        when(readerRepository.findReaderByAge(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByAge(18);
+        ArgumentCaptor<ReaderSpecification> argumentCaptor = ArgumentCaptor.forClass(ReaderSpecification.class);
+        readerService.filterReaders(readerDTO);
 
-        assertEquals(returnedReaders.get(0), reader);
-        verify(readerRepository).findReaderByAge(18);
-    }
-
-    @Test
-    void findReaderByAge_ReturnedEmptyReadersList() {
-        var readers = new ArrayList<Reader>();
-
-        when(readerRepository.findReaderByAge(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByAge(18);
-
-        assertTrue(returnedReaders.isEmpty());
-
-        verify(readerRepository).findReaderByAge(18);
-    }
-
-    @Test
-    void findReaderByAddress_ReadersReturned() {
-        var idValue = 1L;
-        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").address("Pushkinska 79").build();
-        var readers = new ArrayList<Reader>();
-        readers.add(reader);
-
-        when(readerRepository.findReaderByAddress(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
-
-        assertEquals(returnedReaders.get(0), reader);
-        verify(readerRepository).findReaderByAddress("Pushkinska 79");
-    }
-
-    @Test
-    void findReaderByAddress_ReturnedEmptyReaderList() {
-        var readers = new ArrayList<Reader>();
-
-        when(readerRepository.findReaderByAddress(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByAddress("Pushkinska 79");
-
-        assertTrue(returnedReaders.isEmpty());
-
-        verify(readerRepository).findReaderByAddress("Pushkinska 79");
-    }
-
-    @Test
-    void findReaderByName_ReadersReturned() {
-        var idValue = 1L;
-        var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
-        var readers = new ArrayList<Reader>();
-        readers.add(reader);
-
-        when(readerRepository.findReaderByName(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByName("Yurii");
-
-        assertEquals(returnedReaders.get(0), reader);
-        verify(readerRepository).findReaderByName("Yurii");
-    }
-
-    @Test
-    void findReaderByName_ReturnedEmptyReadersList() {
-        var readers = new ArrayList<Reader>();
-
-        when(readerRepository.findReaderByName(any())).thenReturn(readers);
-        var returnedReaders = readerService.findReaderByName("Yurii");
-
-        assertTrue(returnedReaders.isEmpty());
-        verify(readerRepository).findReaderByName("Yurii");
+        verify(readerRepository).findAll(argumentCaptor.capture());
     }
 
     @Test
     void saveReader_ReaderSaved() {
         var idValue = 1L;
         var reader = Reader.builder().id(idValue).age(18).firstName("Yurii").build();
-
 
         when(readerRepository.save(any())).thenReturn(reader);
         Reader returnedReader = readerService.saveReader(reader);

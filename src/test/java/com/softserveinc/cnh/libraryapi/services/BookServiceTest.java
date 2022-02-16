@@ -1,9 +1,11 @@
 package com.softserveinc.cnh.libraryapi.services;
 
+import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.exceptions.ResourceNotFoundException;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.repositories.BookRepository;
 import com.softserveinc.cnh.libraryapi.services.impl.BookServiceImpl;
+import com.softserveinc.cnh.libraryapi.specification.BookSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,9 @@ class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
+    private BookSpecification bookSpecification;
 
     @InjectMocks
     private BookServiceImpl bookService;
@@ -108,102 +115,20 @@ class BookServiceTest {
         verify(bookRepository).findAll();
     }
 
-
+    @MockitoSettings(strictness = Strictness.WARN)
     @Test
-    void findBookByYear_BooksReturned() {
-        var idValue = 1L;
-        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
-                inStockNumber(5).takenBooksNumber(0).build();
+    void findBookByFilterMethod() {
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setYear(1978);
+        bookDTO.setTitle("ContraSpemSpero");
+        bookDTO.setAuthor("Lesya");
 
+        ArgumentCaptor<BookSpecification> argumentCaptor = ArgumentCaptor.forClass(BookSpecification.class);
+        bookService.filterBook(bookDTO);
 
-        var books = new ArrayList<Book>();
-        books.add(b1);
-
-        when(bookRepository.findBookByYear(1977)).thenReturn(books);
-        var returnedBooks = bookService.findBookByYear(1977);
-
-        assertNotNull(returnedBooks);
-        assertEquals(returnedBooks.size(), 1);
-        assertEquals(returnedBooks.get(0), b1);
-
-        verify(bookRepository).findBookByYear(1977);
+        verify(bookRepository).findAll(argumentCaptor.capture());
     }
 
-    @Test
-    void findBookByYear_ReturnedEmptyBooksList() {
-        var books = new ArrayList<Book>();
-
-        when(bookRepository.findBookByYear(1977)).thenReturn(books);
-        var returnedBooks = bookService.findBookByYear(1977);
-
-        assertTrue(returnedBooks.isEmpty());
-
-        verify(bookRepository).findBookByYear(1977);
-    }
-
-    @Test
-    void findBookByAuthor_BooksReturned() {
-        var idValue = 1L;
-        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
-                inStockNumber(5).takenBooksNumber(0).build();
-
-
-        var books = new ArrayList<Book>();
-        books.add(b1);
-
-        when(bookRepository.findBookByAuthor("Taras")).thenReturn(books);
-        var returnedBooks = bookService.findBookByAuthor("Taras");
-
-        assertNotNull(returnedBooks);
-        assertEquals(returnedBooks.size(), 1);
-        assertEquals(returnedBooks.get(0), b1);
-
-        verify(bookRepository).findBookByAuthor("Taras");
-    }
-
-    @Test
-    void findBookByAuthor_ReturnedEmptyBooksList() {
-        var books = new ArrayList<Book>();
-
-        when(bookRepository.findBookByAuthor("Taras")).thenReturn(books);
-        var returnedBooks = bookService.findBookByAuthor("Taras");
-
-        assertTrue(returnedBooks.isEmpty());
-
-        verify(bookRepository).findBookByAuthor("Taras");
-    }
-
-    @Test
-    void findBookByTitle_BooksReturned() {
-        var idValue = 1L;
-        var b1 = Book.builder().id(idValue).author("Taras").title("Kobzar").year(1977).
-                inStockNumber(5).takenBooksNumber(0).build();
-
-
-        var books = new ArrayList<Book>();
-        books.add(b1);
-
-        when(bookRepository.findBookByTitle("Kobzar")).thenReturn(books);
-        var returnedBooks = bookService.findBookByTitle("Kobzar");
-
-        assertNotNull(returnedBooks);
-        assertEquals(returnedBooks.size(), 1);
-        assertEquals(returnedBooks.get(0), b1);
-
-        verify(bookRepository).findBookByTitle("Kobzar");
-    }
-
-    @Test
-    void findBookByTitle_ReturnedEmptyBooksList() {
-        var books = new ArrayList<Book>();
-
-        when(bookRepository.findBookByTitle("Kobzar")).thenReturn(books);
-        var returnedBooks = bookService.findBookByTitle("Kobzar");
-
-        assertTrue(returnedBooks.isEmpty());
-
-        verify(bookRepository).findBookByTitle("Kobzar");
-    }
 
     @Test
     void saveBook_BookSaved() {

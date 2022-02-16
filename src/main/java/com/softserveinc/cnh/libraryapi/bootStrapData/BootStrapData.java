@@ -35,7 +35,7 @@ public class BootStrapData implements CommandLineRunner {
         System.out.println("Books saved: " + bookRepository.count());
         BookMapper bookMapper = new BookMapperImpl();
 
-        BookDTO bookDTO = bookMapper.bookToBookDTO(b1);
+        BookDTO bookDTO = bookMapper.toBookDTO(b1);
         System.out.println(bookDTO.toString());
 
 

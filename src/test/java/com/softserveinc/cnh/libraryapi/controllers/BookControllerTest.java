@@ -1,9 +1,8 @@
 package com.softserveinc.cnh.libraryapi.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import com.softserveinc.cnh.libraryapi.facade.BookFacade;
+import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.model.Book;
+import com.softserveinc.cnh.libraryapi.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,13 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class BookControllerTest {
 
     @Mock
-    BookFacade bookFacade;
+    BookService bookService;
 
     @InjectMocks
     BookController bookController;
@@ -40,12 +40,15 @@ class BookControllerTest {
         List<Book> books = new ArrayList<>();
         books.add(Book.builder().id(1L).author("Taras").title("Kobzar").year(1977).
                 inStockNumber(5).takenBooksNumber(0).build());
-        books.add(Book.builder().id(2L).author("Lesya").title("ContraSpemSpero").year(1978).
+        books.add(Book.builder().id(2L).author("Lesya").title("ContraSpemSpero").year(1977).
                 inStockNumber(7).takenBooksNumber(0).build());
 
-        when(bookFacade.findAllBooks()).thenReturn(books);
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setYear(1977);
 
-        mockMvc.perform(get("/books")).andExpect(status().is(200));
+        when(bookService.filterBook(bookDTO)).thenReturn(books);
+
+        mockMvc.perform(get("/books?year=1977")).andExpect(status().is(200));
     }
 
     @Test
