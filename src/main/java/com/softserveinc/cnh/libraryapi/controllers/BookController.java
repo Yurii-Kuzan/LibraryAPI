@@ -5,6 +5,7 @@ import com.softserveinc.cnh.libraryapi.dto.model.BookDTO;
 import com.softserveinc.cnh.libraryapi.facade.BookFacade;
 import com.softserveinc.cnh.libraryapi.model.Book;
 import com.softserveinc.cnh.libraryapi.services.BookService;
+import com.softserveinc.cnh.libraryapi.validators.impl.BookDtoValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,12 @@ public class BookController {
 
     private final BookFacade bookFacade;
     private final BookService bookService;
+    private final BookDtoValidator bookDtoYearValidator;
 
-    public BookController(BookFacade bookFacade, BookService bookService) {
+    public BookController(BookFacade bookFacade, BookService bookService, BookDtoValidator bookDtoYearValidator) {
         this.bookFacade = bookFacade;
         this.bookService = bookService;
+        this.bookDtoYearValidator = bookDtoYearValidator;
     }
 
     @GetMapping
@@ -36,6 +39,7 @@ public class BookController {
             bookDTO.setAuthor(author.orElse(null));
             bookDTO.setTitle(title.orElse(null));
             //Validate(DTO)
+            bookDtoYearValidator.validate(bookDTO);
             return ResponseEntity.ok(bookService.filterBook(bookDTO));
         }
     }

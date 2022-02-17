@@ -5,6 +5,7 @@ import com.softserveinc.cnh.libraryapi.dto.model.ReaderDTO;
 import com.softserveinc.cnh.libraryapi.facade.ReaderFacade;
 import com.softserveinc.cnh.libraryapi.model.Reader;
 import com.softserveinc.cnh.libraryapi.services.ReaderService;
+import com.softserveinc.cnh.libraryapi.validators.impl.ReaderDtoValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,10 +26,12 @@ public class ReaderController {
 
     private final ReaderFacade readerFacade;
     private final ReaderService readerService;
+    private final ReaderDtoValidator readerDtoValidator;
 
-    public ReaderController(ReaderFacade readerFacade, ReaderService readerService) {
+    public ReaderController(ReaderFacade readerFacade, ReaderService readerService, ReaderDtoValidator readerDtoValidator) {
         this.readerFacade = readerFacade;
         this.readerService = readerService;
+        this.readerDtoValidator = readerDtoValidator;
     }
 
     @GetMapping
@@ -42,7 +45,8 @@ public class ReaderController {
             readerDTO.setAge(age.orElse(null));
             readerDTO.setAddress(address.orElse(null));
             readerDTO.setFirstName(name.orElse(null));
-            //Validate(DTO)
+
+            readerDtoValidator.validate(readerDTO);
             return ResponseEntity.ok(readerService.filterReaders(readerDTO));
         }
     }
